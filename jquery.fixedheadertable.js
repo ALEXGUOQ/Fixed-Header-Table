@@ -39,6 +39,9 @@
     };
 
     var settings = {};
+    var body = undefined;
+    var header = undefined;
+    var footer = undefined;
 
     // public methods
     var methods = {
@@ -332,23 +335,30 @@
         $self.bind('scroll', function() {
           if (settings.fixedColumns > 0) {
             var $fixedColumns = $wrapper.find('.fht-fixed-column');
-
-            $fixedColumns.find('.fht-tbody table')
-              .css({
-                  'margin-top': -$self.scrollTop()
-              });
+            var margin = -$self.scrollTop();
+            
+            if (body === undefined) {
+              body = $fixedColumns.find('.fht-tbody table');
+            }
+            body.css({
+              'margin-top': margin
+            });
           }
 
-          $thead.find('table')
-            .css({
-              'margin-left': -this.scrollLeft
-            });
+          if (header === undefined) {
+            header = $thead.find('table');
+          }
+          header.css({
+            'margin-left': -this.scrollLeft
+          });
 
           if (settings.footer || settings.cloneHeadToFoot) {
-            $tfoot.find('table')
-              .css({
-                'margin-left': -this.scrollLeft
-              });
+            if (footer === undefined) {
+              footer = $tfoot.find('table');
+            }
+            footer.css({
+              'margin-left': -this.scrollLeft
+            });
           }
         });
       },
